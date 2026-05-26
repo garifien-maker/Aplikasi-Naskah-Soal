@@ -58,6 +58,7 @@ export default function ExamForm({ onGenerate }: ExamFormProps) {
     },
     pgOptionCount: 4,
     pgKompleksAnswerCount: 2,
+    imageMode: 'otomatis',
     difficultyDist: { mudah: 30, sedang: 50, sulit: 20 },
     questionCount: 10,
     duration: 60,
@@ -685,6 +686,44 @@ export default function ExamForm({ onGenerate }: ExamFormProps) {
                 </div>
               )}
             </div>
+
+            {/* Opsi Stimulus Bergambar AI */}
+            <div className="mt-4 border-t border-gray-100 pt-4">
+              <div className="rounded-xl bg-amber-50/50 p-4 border border-amber-100">
+                <div className="mb-3">
+                  <label className="flex items-center gap-2 text-sm font-bold text-amber-800">
+                    🖼️ Mode Stimulus Bergambar AI
+                  </label>
+                  <p className="mt-1 text-xs text-amber-700 leading-relaxed">
+                    Pilih bagaimana AI menyematkan gambar stimulus (Siklus Air, Ekosistem Kolam, atau Transaksi Belanja) ke dalam soal untuk meningkatkan literasi visual siswa.
+                  </p>
+                </div>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  {([
+                    { key: 'otomatis', label: '🤖 Otomatis AI', desc: 'Cerdas & Sesuai' },
+                    { key: 'sains', label: '🔬 Hanya Sains', desc: 'Diagram Ilmiah' },
+                    { key: 'matematika', label: '📐 Hanya Matematika', desc: 'Transaksi / Kantin' },
+                    { key: 'tanpa', label: '❌ Tanpa Gambar', desc: 'Teks Bersih (Hemat Tinta)' },
+                  ]).map((mode) => {
+                    const isSelected = (config.imageMode || 'otomatis') === mode.key;
+                    return (
+                      <button
+                        key={mode.key}
+                        onClick={() => updateConfig({ imageMode: mode.key as any })}
+                        className={`flex flex-col items-center justify-center rounded-xl border-2 p-2.5 text-center transition-all duration-200 hover:scale-105 ${
+                          isSelected
+                            ? 'border-amber-500 bg-white text-amber-800 font-bold shadow-sm ring-2 ring-amber-400/40'
+                            : 'border-amber-200 bg-amber-50/30 text-amber-700 hover:bg-amber-100/50'
+                        }`}
+                      >
+                        <span className="text-xs font-black">{mode.label}</span>
+                        <span className="text-[9px] text-amber-600/80 mt-0.5">{mode.desc}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* ===== NEW: Difficulty Distribution ===== */}
@@ -1017,7 +1056,8 @@ export default function ExamForm({ onGenerate }: ExamFormProps) {
               <div>🎓 Jenjang: <strong>{gradeLabels[config.grade || 'sd']}</strong></div>
               <div>🏷️ Fase: <strong>{selectedPhase?.label}</strong></div>
               <div>👨‍🎓 Kelas: <strong>Kelas {config.classLevel}</strong></div>
-              <div className="col-span-2">📌 Jenis Ujian: <strong>{examTypeLabels[config.examType || 'PH']}</strong></div>
+              <div>📌 Jenis Ujian: <strong>{examTypeLabels[config.examType || 'PH']}</strong></div>
+              <div>🖼️ Soal Bergambar: <strong>{config.imageMode === 'tanpa' ? 'Non-aktif' : config.imageMode === 'matematika' ? 'Hanya Matematika' : config.imageMode === 'sains' ? 'Hanya Sains/Diagram' : 'Aktif (Otomatis AI)'}</strong></div>
               <div className="col-span-2">
                 📚 Topik:{' '}
                 <strong>
