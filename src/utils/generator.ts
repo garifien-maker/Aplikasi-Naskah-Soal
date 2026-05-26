@@ -381,6 +381,26 @@ export function generateExam(config: ExamConfig): GeneratedExam {
   // Apply format constraints for PG Option Count and PG Kompleks correct count
   combined = combined.map(q => applyFormatConstraints(q, config));
 
+  // Enforce includeImages constraint (Auto AI image selection)
+  combined = combined.map(q => {
+    const updated = { ...q };
+    if (config.includeImages) {
+      if (!updated.image) {
+        const textLower = (updated.text + ' ' + updated.topic).toLowerCase();
+        if (updated.subject === 'matematika' || textLower.includes('belanja') || textLower.includes('uang') || textLower.includes('toko') || textLower.includes('transaksi')) {
+          updated.image = '/images/transaksi_kantin.jpg';
+        } else if (textLower.includes('siklus') || textLower.includes('air') || textLower.includes('hujan') || textLower.includes('cuaca')) {
+          updated.image = '/images/siklus_air.jpg';
+        } else if (updated.subject === 'ipa' || updated.subject === 'ipas' || textLower.includes('kolam') || textLower.includes('ekosistem') || textLower.includes('tumbuhan') || textLower.includes('hewan')) {
+          updated.image = '/images/ekosistem_kolam.jpg';
+        }
+      }
+    } else {
+      updated.image = undefined;
+    }
+    return updated;
+  });
+
   // Re-index to ensure sequential numbering
   const questions: Question[] = combined.map((q, index) => ({
     ...q,
