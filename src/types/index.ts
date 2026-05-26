@@ -65,6 +65,7 @@ export interface ExamConfig {
   questionTypeCounts: Record<QuestionType, number>; // detailed count for each question type
   pgOptionCount: number; // 3 = A-C, 4 = A-D, 5 = A-E
   pgKompleksAnswerCount: number; // 2 or 3 correct answers
+  imageMode: 'otomatis' | 'sains' | 'matematika' | 'tanpa'; // AI Image Matching mode
   difficultyDist: DifficultyDistribution;
   questionCount: number;
   duration: number; // in minutes
