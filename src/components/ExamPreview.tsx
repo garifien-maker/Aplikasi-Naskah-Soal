@@ -404,7 +404,7 @@ export default function ExamPreview({ exam, onRegenerate, onBack, onShowBlueprin
 
       {/* Warning Message */}
       {warning && (
-        <div className="mb-6 rounded-xl border border-yellow-400 bg-yellow-50 p-4">
+        <div className="mb-6 rounded-xl border border-yellow-400 bg-yellow-50 p-4 print:hidden">
           <div className="flex items-start gap-3">
             <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-yellow-500 text-sm font-bold text-white">!</div>
             <div>
